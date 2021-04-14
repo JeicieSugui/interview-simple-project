@@ -1,98 +1,67 @@
-// add your javascript code here
-var map = L.map('map').setView([11, 123], 6);
+	//margin
+	var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+    	height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=Ha56is8yKNVXNA3PxaCu', {
-attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>', 
- }).addTo(map);
+	var svg = d3.select("body")
+    	.append("svg")
 
-
-
-
-    let popup = L.popup();
-function onMapClick(e) {
-    popup
-        .setLatLng(e.latlng)
-        .setContent(
-            "You clicked the map at -<br>" + 
-            "<b>lon:</b> " + e.latlng.lng + "<br>" + 
-            "<b>lat:</b> " + e.latlng.lat
-        )
-        .openOn(map);
-}
-map.addEventListener("click", onMapClick);
+	svg.attr("viewBox", "3300 2 " + width + " " + height)
+    	.attr("preserveAspectRatio", "xMinYMin");
 
 
-function getColor(d) {
-    return d > 1000 ? '#158cea' :
-           d > 500  ? '#d200ff' :
-           d > 200  ? '#f0180f' :
-           d > 100  ? '#e8ff00' :
-           d > 50   ? '#18e738' :
-           d > 20   ? '#FEB24C' :
-           d > 10   ? '#FED976' :
-                      '#FFEDA0';
-}
-
-function style(feature) {
-    return {
-        fillColor: getColor(feature.properties.ID_2),
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-    };
-}
+	var map = svg.append("g")
+    	.attr("class", "map");
 
 
-function highlightFeature(e) {
-    var layer = e.target;
-
-    layer.setStyle({
-        weight: 4,
-        color: 'gray',
-        fillColor: 'white',
-        fillOpacity: 0.2
-    });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-}
+    //Read js
+    d3.queue()
+	  .defer(d3.json, "resource/PAR.json")
+	  .defer(d3.json, "resource/PH.json")
+	  .defer(d3.json, "resource/PH_Municipal.json")
+	  .await(ready)
 
 
-function resetHighlight(e) {
-    geojson.resetStyle(e.target);
-}
+	//Create Projection
+	var projection = d3.geoMercator()
+		.scale(1450)
+		.translate([ width / 1.75, height / 1])
+	
 
-function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
-}
-
-function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomToFeature
-    });
-}
-
-geojson = L.geoJson(PH_MunicipalMap, {
-    style: style,
-    onEachFeature: onEachFeature
-}).addTo(map);
-
-//L.geoJson(PHmap).addTo(map);
-
-var myStyle = {
-    "color": "#fd1a02",
-    "weight": 5,
-    "opacity": 0.65
-};
-
-L.geoJSON(PARmap, {
-    style: myStyle
-}).addTo(map);
+	//Create Path
+	var path = d3.geoPath()
+		.projection(projection)
 
 
+	function ready (error, par_json, ph_json, phmun_json){
 
+	var par_feature = (par_json).features
+	console.log(par_feature)
+
+	var ph_feature = (ph_json).features
+	console.log(ph_feature)
+
+	var phmun_feature = (phmun_json).features
+	console.log(phmun_feature)
+
+
+	svg.selectAll(".par")
+		.data(par_feature)
+		.enter().append("path")
+		.attr("class", "par")
+		.attr("d", path)
+
+	svg.selectAll(".phmun")
+		.data(phmun_feature)
+		.enter().append("path")
+		.attr("class", "phmun")
+		.attr("d", path)
+
+
+	svg.selectAll(".ph")
+		.data(ph_feature)
+		.enter().append("path")
+		.attr("class", "ph")
+		.attr("d", path)
+
+
+	}

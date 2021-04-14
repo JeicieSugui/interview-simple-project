@@ -1,0 +1,97 @@
+body{
+    background-color: #abdbf2;
+    margin: 0px;
+    padding: 0px;
+}
+
+.navbar{
+	width: 100%;
+	height: 50px;
+	background-color: #00203FFF;
+
+	overflow: auto;
+}
+
+.center{
+	text-align: center;
+}
+
+h1{
+	font-family: "Palatino Linotype", serif;
+	font-size: 50px;
+}
+
+span{
+	margin-right: auto;
+	margin-left: 4.5em;
+	color: black; 
+	font-family: "Palatino Linotype", serif;
+}
+
+ul{
+    list-style: none;
+}
+li{
+   float:right;
+}
+.logo img{    
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    margin-top: 0.1em;
+    margin-left: 10px;
+}
+nav a{
+    width: 100px;
+    height: 10px;
+    margin-top: -1em;
+    display: block;
+    padding: 20px 10px;
+    text-decoration: none;
+    font-family: Tahoma; 
+    color: #f2f2f2;
+    text-align: center;
+}
+
+nav a:hover{
+        background: #8DA7B7;
+        transition: 0.5s;
+}
+
+
+p{
+	margin-left: 100px;
+	margin-right: 110px;
+
+}
+
+
+#aboutform
+{
+   background-color: #FBFBFB;
+   border: 0px solid #CCCCCC;
+   position:absolute;
+   left:100px;
+   top:70px;
+   width:1152px;
+   height:800px;
+   z-index:1;
+}
+
+.par{
+        fill: none;
+        stroke: #333;
+        stroke-width: 0.3;
+    }    
+
+.ph{
+        fill: none;
+        stroke: #333;
+        stroke-width: 0.2;
+    }   
+
+.phmun{
+		fill: #ffeabd;
+		stroke: #fff;
+		stroke-width: 0.15;
+} 
